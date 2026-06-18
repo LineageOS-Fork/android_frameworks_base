@@ -1482,7 +1482,9 @@ public class DisplayRotation {
 
             // Configure rotation suggestions.
             final int showRotationSuggestions =
-                    Settings.Secure.getIntForUser(resolver,
+                    ActivityManager.isLowRamDeviceStatic()
+                            ? Settings.Secure.SHOW_ROTATION_SUGGESTIONS_DISABLED
+                            : Settings.Secure.getIntForUser(resolver,
                             Settings.Secure.SHOW_ROTATION_SUGGESTIONS,
                             Settings.Secure.SHOW_ROTATION_SUGGESTIONS_DEFAULT,
                             UserHandle.USER_CURRENT);

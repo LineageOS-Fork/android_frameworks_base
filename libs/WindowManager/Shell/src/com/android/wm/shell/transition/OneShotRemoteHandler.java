@@ -69,7 +69,7 @@ public class OneShotRemoteHandler implements Transitions.TransitionHandler {
         final IBinder.DeathRecipient remoteDied = createDeathRecipient(finishCallback);
         IRemoteTransitionFinishedCallback cb =
                 createFinishedCallback(info, finishTransaction, finishCallback, remoteDied);
-        Transitions.setRunningRemoteTransitionDelegate(transition);
+        Transitions.setRunningRemoteTransitionDelegate(mRemote.getAppThread());
         try {
             if (mRemote.asBinder() != null) {
                 mRemote.asBinder().linkToDeath(remoteDied, 0 /* flags */);
@@ -146,7 +146,7 @@ public class OneShotRemoteHandler implements Transitions.TransitionHandler {
         IRemoteTransitionFinishedCallback cb = createFinishedCallback(
                 info, null /* finishTransaction */, finishCallback, remoteDied);
 
-        Transitions.setRunningRemoteTransitionDelegate(transition);
+        Transitions.setRunningRemoteTransitionDelegate(mRemote.getAppThread());
 
         try {
             if (mRemote.asBinder() != null) {

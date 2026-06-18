@@ -49,8 +49,6 @@ class RemoteTransitionHandlerTest : ShellTestCase() {
     private val testExecutor: TestSyncExecutor = TestSyncExecutor()
 
     private val testRemoteTransition = RemoteTransition(TestRemoteTransition())
-    private val testRemoteTransitionInfo =
-        TransitionRequestInfo.RemoteTransitionInfo(testRemoteTransition)
     private lateinit var handler: RemoteTransitionHandler
 
     @Before
@@ -67,8 +65,7 @@ class RemoteTransitionHandlerTest : ShellTestCase() {
 
     @Test
     fun handleRequest_testRemoteTransition_returnsWindowContainerTransaction() {
-        val request =
-            TransitionRequestInfo(WindowManager.TRANSIT_OPEN, null, testRemoteTransitionInfo)
+        val request = TransitionRequestInfo(WindowManager.TRANSIT_OPEN, null, testRemoteTransition)
 
         assertTrue(handler.handleRequest(mock(), request) is WindowContainerTransaction)
     }
@@ -91,8 +88,7 @@ class RemoteTransitionHandlerTest : ShellTestCase() {
 
     @Test
     fun startAnimation_remoteTransition_returnsTrue() {
-        val request =
-            TransitionRequestInfo(WindowManager.TRANSIT_OPEN, null, testRemoteTransitionInfo)
+        val request = TransitionRequestInfo(WindowManager.TRANSIT_OPEN, null, testRemoteTransition)
         handler.addFiltered(TransitionFilter(), testRemoteTransition)
         handler.handleRequest(mock(), request)
 
@@ -111,7 +107,7 @@ class RemoteTransitionHandlerTest : ShellTestCase() {
     @EnableFlags(Flags.FLAG_ENABLE_CROSS_DISPLAYS_APP_LAUNCH_TRANSITION)
     fun startAnimation_remoteTransition_displayRotationChange_returnsFalse() {
         val request =
-            TransitionRequestInfo(WindowManager.TRANSIT_CHANGE, null, testRemoteTransitionInfo)
+            TransitionRequestInfo(WindowManager.TRANSIT_CHANGE, null, testRemoteTransition)
         handler.addFiltered(TransitionFilter(), testRemoteTransition)
         handler.handleRequest(mock(), request)
         val transitionInfo = TransitionInfo(WindowManager.TRANSIT_CHANGE, /* flags= */ 0).apply {
@@ -134,8 +130,7 @@ class RemoteTransitionHandlerTest : ShellTestCase() {
     @Test
     @EnableFlags(Flags.FLAG_ENABLE_CROSS_DISPLAYS_APP_LAUNCH_TRANSITION)
     fun startAnimation_remoteTransition_orderOnlyDisplayChange_returnsTrue() {
-        val request =
-            TransitionRequestInfo(WindowManager.TRANSIT_OPEN, null, testRemoteTransitionInfo)
+        val request = TransitionRequestInfo(WindowManager.TRANSIT_OPEN, null, testRemoteTransition)
         handler.addFiltered(TransitionFilter(), testRemoteTransition)
         handler.handleRequest(mock(), request)
         val transitionInfo = TransitionInfo(WindowManager.TRANSIT_CHANGE, /* flags= */ 0).apply {
